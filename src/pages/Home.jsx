@@ -1,38 +1,40 @@
-function Home({ list }) {
-  let tot = list.length
-  let saved = 0
-  let hot = 0
+function Home({ gaane }) {
+  let tot = gaane.length;
+  let playl = 0;
+  let hot = 0;
 
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].isInPlaylist) {
-      saved++
+  for (let i = 0; i < gaane.length; i++) {
+    if (gaane[i].isInPlaylist) {
+      playl++;
     }
-    if (list[i].streams >= 1000000) {
-      hot++
+    if (gaane[i].streams >= 1000000) {
+      hot++;
     }
   }
 
   return (
-    <div className="page">
+    <div>
       <h1>Music Playlist</h1>
-      <p>Welcome to the music playlist application. Browse songs, explore genres, and manage your custom playlist.</p>
+      <p>Browse your favorite songs, filter by genre, and create your own playlist.</p>
 
-      <div className="boxes">
-        <div className="stat-box">
+      <div>
+        <div>
           <h3>Total Songs</h3>
-          <p className="num">{tot}</p>
+          <p>{tot}</p>
         </div>
-        <div className="stat-box">
+
+        <div>
           <h3>Songs in Playlist</h3>
-          <p className="num">{saved}</p>
+          <p>{playl}</p>
         </div>
-        <div className="stat-box">
+
+        <div>
           <h3>Trending Songs</h3>
-          <p className="num">{hot}</p>
+          <p>{hot}</p>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

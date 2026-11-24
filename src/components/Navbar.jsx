@@ -1,16 +1,13 @@
-import { Link } from 'react-router'
+import { Link } from "react-router-dom";
 
-function Navbar({ cnt }) {
+function Navbar() {
   return (
-    <nav className="nav">
-      <div className="nav-brand">Music App</div>
-      <div className="nav-links">
-        <Link to="/">Home</Link>
-        <Link to="/songs">Songs</Link>
-        <Link to="/playlist">Playlist ({cnt})</Link>
-      </div>
-    </nav>
-  )
+    <div>
+      <Link to="/">Home</Link>
+      <Link to="/songs">Songs</Link>
+      <Link to="/playlist">Playlist</Link>
+    </div>
+  );
 }
 
-export default Navbar
+export default Navbar;

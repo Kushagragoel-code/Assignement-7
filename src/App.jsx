@@ -1,53 +1,43 @@
-import { useState } from 'react'
-import { Routes, Route } from 'react-router'
-import songs from './data/songs'
-import Navbar from './components/Navbar'
-import Home from './pages/Home'
-import Songs from './pages/Songs'
-import SongDetails from './pages/SongDetails'
-import Playlist from './pages/Playlist'
-import './App.css'
-
-function calcTime(sec) {
-  let m = Math.floor(sec / 60)
-  let s = sec % 60
-  if (s < 10) {
-    s = '0' + s
-  }
-  return m + ':' + s
-}
+import { useState } from "react";
+import { Routes, Route } from "react-router";
+import gaaneData from "./data/songs";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import Songs from "./pages/Songs";
+import SongDetails from "./pages/SongDetails";
+import Playlist from "./pages/Playlist";
 
 function App() {
-  const [list, setList] = useState(songs)
+  const [gaane, setGaane] = useState(gaaneData);
 
-  function flip(id) {
-    let next = list.map((s) => {
-      if (s.id === id) {
-        return { ...s, isInPlaylist: !s.isInPlaylist }
+  function changePlayl(id) {
+    let temp = [];
+    for (let i = 0; i < gaane.length; i++) {
+      let item = gaane[i];
+      if (item.id === id) {
+        let newStatus = true;
+        if (item.isInPlaylist === true) {
+          newStatus = false;
+        }
+        temp.push({ ...item, isInPlaylist: newStatus });
+      } else {
+        temp.push(item);
       }
-      return s
-    })
-    setList(next)
-  }
-
-  let cnt = 0
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].isInPlaylist) {
-      cnt++
     }
+    setGaane(temp);
   }
 
   return (
-    <div className="box">
-      <Navbar cnt={cnt} />
+    <div>
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Home list={list} />} />
-        <Route path="/songs" element={<Songs list={list} flip={flip} calcTime={calcTime} />} />
-        <Route path="/songs/:id" element={<SongDetails list={list} flip={flip} calcTime={calcTime} />} />
-        <Route path="/playlist" element={<Playlist list={list} flip={flip} calcTime={calcTime} />} />
+        <Route path="/" element={<Home gaane={gaane} />} />
+        <Route path="/songs" element={<Songs gaane={gaane} changePlayl={changePlayl} />} />
+        <Route path="/songs/:id" element={<SongDetails gaane={gaane} changePlayl={changePlayl} />} />
+        <Route path="/playlist" element={<Playlist gaane={gaane} changePlayl={changePlayl} />} />
       </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

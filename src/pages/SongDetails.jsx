@@ -1,42 +1,59 @@
-import { useParams, Link } from 'react-router'
+import { useParams, Link } from "react-router";
 
-function SongDetails({ list, flip, calcTime }) {
-  const { id } = useParams()
-  const item = list.find((s) => s.id === parseInt(id))
+function SongDetails({ gaane, changePlayl }) {
+  const { id } = useParams();
 
-  if (!item) {
+  let songdone = null;
+  for (let i = 0; i < gaane.length; i++) {
+    if (gaane[i].id === Number(id)) {
+      songdone = gaane[i];
+      break;
+    }
+  }
+
+  function getTime(s) {
+    let m = Math.floor(s / 60);
+    let r = s % 60;
+    if (r < 10) {
+      return m + ":0" + r;
+    }
+    return m + ":" + r;
+  }
+
+  if (!songdone) {
     return (
-      <div className="page">
+      <div>
         <h2>Song not found</h2>
-        <Link to="/songs">Back to Songs</Link>
+        <Link to="/songs">Back</Link>
       </div>
-    )
+    );
+  }
+
+  let trend = "";
+  if (songdone.streams >= 1000000) {
+    trend = "Trending 🔥";
+  }
+
+  let btnText = "Add to Playlist";
+  if (songdone.isInPlaylist) {
+    btnText = "Remove from Playlist";
   }
 
   return (
-    <div className="page">
-      <Link to="/songs" className="back-link">
-        Back to Songs
-      </Link>
-      <div className="details-box">
-        <h2>{item.title}</h2>
-        <p>Artist: {item.artist}</p>
-        <p>Genre: {item.genre}</p>
-        <p>Duration: {calcTime(item.duration)}</p>
-        <p>Album: {item.album}</p>
-        <p>Year: {item.year}</p>
-        <p>Streams: {item.streams}</p>
+    <div>
+      <h1>{songdone.title}</h1>
+      <p>{trend}</p>
+      <p>Artist: {songdone.artist}</p>
+      <p>Genre: {songdone.genre}</p>
+      <p>Duration: {getTime(songdone.duration)}</p>
+      <p>Album: {songdone.album}</p>
+      <p>Year: {songdone.year}</p>
+      <p>Streams: {songdone.streams}</p>
 
-        {item.streams >= 1000000 && <span className="badge">Trending</span>}
-
-        <div className="detail-actions">
-          <button onClick={() => flip(item.id)}>
-            {item.isInPlaylist ? 'Remove from Playlist' : 'Add to Playlist'}
-          </button>
-        </div>
-      </div>
+      <button onClick={() => changePlayl(songdone.id)}>{btnText}</button>
+      <Link to="/songs">Back to Songs</Link>
     </div>
-  )
+  );
 }
 
-export default SongDetails
+export default SongDetails;
